@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Thumb2</string>
+    <string name="insert_email">כתובת אימייל</string>
+    <string name="insert_password">סיסמא</string>
+    <string name="hint1"><i>Your hint here</i></string>
+    <string name="repeat_password">חזור על הסיסמא</string>
+    <string name="insert_first_name">שם פרטי</string>
+    <string name="insert_last_name">שם משפחה</string>
+    <string name="insert_id_number">מספר תעודת זהות</string>
+    <string name="insert_personal_number">מספר אישי</string>
+    <string name="insert_release_date">תאריך שחרור</string>
+
+</resources>

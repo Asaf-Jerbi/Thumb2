@@ -18,9 +18,7 @@ public class SoldierOrDriverOptionsActivity extends AppCompatActivity {
     ImageView soldier_ib, driver_ib, next_btn;
     TextView soldier_tv, driver_tv;
 
-    enum UserType {SOLDIER, DRIVER}
-
-    UserType userType;
+    Helper.UserType userType;
 
 
     @Override
@@ -38,14 +36,14 @@ public class SoldierOrDriverOptionsActivity extends AppCompatActivity {
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userType == UserType.SOLDIER) {
+                if (userType == Helper.UserType.SOLDIER) {
                     //todo: add putExtra to save it a soldier and move next to registration page
-                    Intent intent = new Intent(SoldierOrDriverOptionsActivity.this, RegistrationActivity.class)
-                    intent.putExtra("UserType", "soldier");
+                    Intent intent = new Intent(SoldierOrDriverOptionsActivity.this, RegistrationActivity.class);
+                    intent.putExtra("userType", "soldier");
                     startActivity(intent);
                     finish();
-                } else if (userType == UserType.DRIVER) {
-                    Intent intent = new Intent(SoldierOrDriverOptionsActivity.this, RegistrationActivity.class)
+                } else if (userType == Helper.UserType.DRIVER) {
+                    Intent intent = new Intent(SoldierOrDriverOptionsActivity.this, RegistrationActivity.class);
                     intent.putExtra("userType", "driver");
                     startActivity(intent);
                     finish();
@@ -57,7 +55,7 @@ public class SoldierOrDriverOptionsActivity extends AppCompatActivity {
         soldier_ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userType = UserType.SOLDIER;
+                userType = Helper.UserType.SOLDIER;
                 //change image from black to image with colors
                 soldier_ib.setBackgroundResource(R.drawable.beret);
                 driver_ib.setBackgroundResource(R.drawable.hat_unclicked);
@@ -70,7 +68,7 @@ public class SoldierOrDriverOptionsActivity extends AppCompatActivity {
         driver_ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userType = UserType.DRIVER;
+                userType = Helper.UserType.DRIVER;
                 //change image from black to image with colors
                 soldier_ib.setBackgroundResource(R.drawable.beret_unclicked);
                 driver_ib.setBackgroundResource(R.drawable.hat);

@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationActivity"
-    android:background="@drawable/registration_bg">
-
+    android:background="@drawable/registration_bg"
+    tools:context=".RegistrationActivity">
 
 
     <ImageView
@@ -38,6 +37,7 @@
         app:layout_constraintStart_toStartOf="@+id/armyIdCard_iv"
         app:layout_constraintTop_toTopOf="@+id/armyIdCard_iv"
         app:layout_constraintVertical_bias="1.0" />
+
 
     <LinearLayout
         android:layout_width="288dp"
@@ -88,7 +88,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint="@string/insert_last_name"
-            android:inputType="number"
+            android:inputType="text"
             android:paddingLeft="15dp"
             android:paddingTop="10dp"
             android:paddingRight="15dp"
@@ -168,5 +168,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.908" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

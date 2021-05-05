@@ -1,53 +1,70 @@
 package com.example.thumb2;
 
-import android.renderscript.ScriptIntrinsicYuvToRGB;
-
 import java.time.LocalDate;
 
 public class UserInformation {
 
     //Fields
-    private int id;
+    private String firstName;
+    private String lastName;
     private int personalNumber;
-    private String fName;
-    private String LName;
+    private int idNumber;
     private LocalDate releaseDate;
     private Integer carNumber;
-    private String carModel;
-    private String carColor;
+    private String phoneNumber;
+    private Helper.UserType userType;
+
+
+    public void setUserType(Helper.UserType userType) {
+        this.userType = userType;
+    }
+
+    public Helper.UserType getUserType() {
+        return userType;
+    }
 
     // ! ! ! ! ! !
     //NOTE: THIS CLASS MUST HAVE EMPTY CONSTRUCTOR, GETTERS AND SETTERS. DO NOT MODIFY IT.
     // ! ! ! ! ! !
 
-    public UserInformation() {}
-
-    public UserInformation(int id, int personalNumber, String fName, String LName,
-                           LocalDate releaseDate, Integer carNumber, String carModel, String carColor) {
-        this.id = id;
-        this.personalNumber = personalNumber;
-        this.fName = fName;
-        this.LName = LName;
-        this.releaseDate = releaseDate;
-        this.carNumber = carNumber;
-        this.carModel = carModel;
-        this.carColor = carColor;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getId() {
-        return id;
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public UserInformation(String firstName, String lastName, int personalNumber, int idNumber,
+                           LocalDate releaseDate, Integer carNumber, String phoneNumber,
+                           Helper.UserType userType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.personalNumber = personalNumber;
+        this.idNumber = idNumber;
+        this.releaseDate = releaseDate;
+        this.carNumber = carNumber;
+        this.phoneNumber = phoneNumber;
+        this.userType = userType;
+    }
+
+    public UserInformation() {
+    }
+
+    public int getIdNumber() {
+        return idNumber;
     }
 
     public int getPersonalNumber() {
         return personalNumber;
     }
 
-    public String getfName() {
-        return fName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLName() {
-        return LName;
+    public String getLastName() {
+        return lastName;
     }
 
     public LocalDate getReleaseDate() {
@@ -58,28 +75,20 @@ public class UserInformation {
         return carNumber;
     }
 
-    public String getCarModel() {
-        return carModel;
-    }
-
-    public String getCarColor() {
-        return carColor;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setIdNumber(int idNumber) {
+        this.idNumber = idNumber;
     }
 
     public void setPersonalNumber(int personalNumber) {
         this.personalNumber = personalNumber;
     }
 
-    public void setfName(String fName) {
-        this.fName = fName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLName(String LName) {
-        this.LName = LName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setReleaseDate(LocalDate releaseDate) {
@@ -88,13 +97,5 @@ public class UserInformation {
 
     public void setCarNumber(Integer carNumber) {
         this.carNumber = carNumber;
-    }
-
-    public void setCarModel(String carModel) {
-        this.carModel = carModel;
-    }
-
-    public void setCarColor(String carColor) {
-        this.carColor = carColor;
     }
 }

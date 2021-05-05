@@ -23,8 +23,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.core.utilities.Validation;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.time.LocalDate;
 
@@ -35,14 +37,15 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private String email, password, password2;
-
-    enum Validation {VALID, INVALID}
+    private Helper helper;
+    public enum Validation {VALID, INVALID}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //initiate super class and define content view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        helper = new Helper();
 
         //initiate views
         firebaseAuth = FirebaseAuth.getInstance();
@@ -65,32 +68,25 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void Register() {
-        //get data from text boxes:
+
+        //get data:
         email = emailEt.getText().toString();
         password = passwordEt1.getText().toString();
         password2 = passwordEt2.getText().toString();
+
+        //validate data:
 
         if (isValidData() == Validation.INVALID) {
             return;
         }
 
-        // #$#$#$#$#$#$#$#$ I STOPPED HERE LAST TIME: 25/04/2021 23:02 #$#$#$#$#$#$#$#$#$# //
-        // #$#$#$#$#$#$#$#$ I STOPPED HERE LAST TIME: 25/04/2021 23:02 #$#$#$#$#$#$#$#$#$# //
-        // #$#$#$#$#$#$#$#$ I STOPPED HERE LAST TIME: 25/04/2021 23:02 #$#$#$#$#$#$#$#$#$# //
-        //1. user data was created on firebase, but one time it didn't (don't know why)
-        //2. now I need to move all the information taking to another activity, here I only should
-        //get the email and the password (if they valid)
-        //3. after all that, I should create a page for displaying all the data for specific user.
-        // #$#$#$#$#$#$#$#$ I STOPPED HERE LAST TIME: 25/04/2021 23:02 #$#$#$#$#$#$#$#$#$# //
-        // #$#$#$#$#$#$#$#$ I STOPPED HERE LAST TIME: 25/04/2021 23:02 #$#$#$#$#$#$#$#$#$# //
-        // #$#$#$#$#$#$#$#$ I STOPPED HERE LAST TIME: 25/04/2021 23:02 #$#$#$#$#$#$#$#$#$# //
-
-        //todo: move the creation to the end of the registration process.
+        //create user with email and password:
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            firebaseAuth.getCurrentUser();
                             openSoldierOrDriverActivity();
                         } else {
                             Toast.makeText(SignUpActivity.this, "אירעה שגיאה, יש לנסות שנית",
@@ -98,10 +94,6 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
-        //todo: add below line back
-
     }
 
     private void openSoldierOrDriverActivity() {
@@ -122,6 +114,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private Validation validatePasswords() {
         Validation validationFlag = Validation.VALID;
+        //password1:
         //check if empty
         if (TextUtils.isEmpty(password)) {
             passwordEt1.setError("יש להזין סיסמא");
@@ -132,7 +125,7 @@ public class SignUpActivity extends AppCompatActivity {
             validationFlag = Validation.INVALID;
         }
 
-
+        //password2:
         //check if empty
         if (TextUtils.isEmpty(password2)) {
             passwordEt2.setError("יש להזין סיסמא בשנית");

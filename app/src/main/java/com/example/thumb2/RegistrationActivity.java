@@ -3,59 +3,65 @@ package com.example.thumb2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.rpc.Help;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+    public static final String TAG = "RegistrationActivity";
+
     //Fields
     private ImageView armyIdCardImageView, uploadImageImageView;
-    private EditText firstName_et, lastNmae_et, idNumber_et, personalNumber_et;
-    private ImageButton nextButton;
+    private EditText firstName_et, lastNmae_et, idNumber_et, personalNumber_et,
+    phoneNumber_et, carNumber_et, carType_et;
+    private TextView releaseDateTextView;
+    private Button nextButton;
     private Uri imageUri;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private FirebaseAuth firebaseAuth;
     private Helper.UserType userType;
-    private String firstName, lastName;
+    private String firstName, lastName, releaseDateString, phoneNumber, carNumber, carDescription;
     private int personalNumber, idNumber;
     private DatabaseReference mDatabase;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //init views
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        armyIdCardImageView = findViewById(R.id.armyIdCard_iv);
+        armyIdCardImageView = findViewById(R.id.selfie_iv);
         uploadImageImageView = findViewById(R.id.upload_image_button);
         firstName_et = findViewById(R.id.insertFirstName);
         lastNmae_et = findViewById(R.id.insertLastName);
         idNumber_et = findViewById(R.id.insertIdNumber);
         personalNumber_et = findViewById(R.id.insertPersonalNumber);
         nextButton = findViewById(R.id.next_btn);
+        releaseDateTextView = findViewById(R.id.releaseDate_tv);
 
         //init firebase services
         firebaseStorage = FirebaseStorage.getInstance();
@@ -67,7 +73,10 @@ public class RegistrationActivity extends AppCompatActivity {
         userType = ((getIntent().getStringExtra("userType").toLowerCase().equals("soldier")
                 ? Helper.UserType.SOLDIER : Helper.UserType.DRIVER));
 
-        //define buttons' behaviour
+
+        ///////////////////   BUTTONS   ///////////////////
+
+        //upload image button
         /*uploadImageImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,8 +84,36 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });*/
 
+        //next button
         nextButton.setOnClickListener(v -> Register());
+
+        //releaseDate tv
+        releaseDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        RegistrationActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String date = dayOfMonth + "/" + month + "/" + year;
+                releaseDateTextView.setText(date);
+            }
+        };
     }
+
 
     private void Register() {
 

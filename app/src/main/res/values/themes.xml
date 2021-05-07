@@ -37,4 +37,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ThumbStyleTwo.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ThumbStyleTwo.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="ThumbStyleTwo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

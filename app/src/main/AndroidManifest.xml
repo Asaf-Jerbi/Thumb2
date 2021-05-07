@@ -9,11 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/ThumbStyleTwo">
-        <activity android:name=".RegistrationActivity"></activity>
+        <activity
+            android:name=".MainScreenActivity"
+            android:label="@string/title_activity_main_screen"
+            android:theme="@style/ThumbStyleTwo.NoActionBar" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".SoldierOrDriverOptionsActivity" />
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/ThumbStyleTwo">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

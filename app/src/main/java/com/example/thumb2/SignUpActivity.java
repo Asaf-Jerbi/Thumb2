@@ -6,29 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.thumb2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.core.utilities.Validation;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
-
-import java.time.LocalDate;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText emailEt, passwordEt1, passwordEt2;
@@ -50,11 +39,16 @@ public class SignUpActivity extends AppCompatActivity {
         //initiate views
         firebaseAuth = FirebaseAuth.getInstance();
         emailEt = findViewById(R.id.insertEmailEditText);
-        passwordEt1 = findViewById(R.id.insertPasswordEditText);
+        passwordEt1 = findViewById(R.id.password_et);
         passwordEt2 = findViewById(R.id.insertPasswordEditText2);
         signUpButton = findViewById(R.id.next_btn);
         signInTv = findViewById(R.id.sign_in_tv);
         progressDialog = new ProgressDialog(this);
+
+
+        //define text to text view:
+        signInTv.setText(Html.fromHtml("<font color='#FFFFFF'>כבר יש לך חשבון? </font>"
+                + "<font color='#ddff00'> היכנס </font>"));
 
 
         //define logic to signup button

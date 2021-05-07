@@ -7,58 +7,80 @@
     android:background="@drawable/login_bg"
     tools:context=".LoginActivity">
 
-
-    <EditText
-        android:id="@+id/insertEmailEditText"
-        android:layout_width="300dp"
+    <LinearLayout
+        android:id="@+id/credentialsLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_text"
-        android:baselineAligned="false"
-        android:drawableLeft="@drawable/email"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="@string/insert_email"
-        android:inputType="textEmailAddress"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:divider="@drawable/empty_tall_divider"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_login"
-        app:layout_constraintVertical_bias="0.086" />
+        app:layout_constraintVertical_bias="0.319">
 
-    <EditText
-        android:id="@+id/insertPasswordEditText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_text"
-        android:baselineAligned="false"
-        android:drawableLeft="@drawable/passsword"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="end"
-        android:hint="@string/insert_password"
-        android:inputType="textPassword"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/insertEmailEditText"
+        <EditText
+            android:id="@+id/insertEmailEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text"
+            android:baselineAligned="false"
+            android:drawableLeft="@drawable/email"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="@string/insert_email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_login"
+            app:layout_constraintVertical_bias="0.086" />
 
+        <EditText
+            android:id="@+id/password_et"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text"
+            android:baselineAligned="false"
+            android:drawableLeft="@drawable/passsword"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:foregroundGravity="left"
+            android:gravity="end"
+            android:hint="@string/insert_password"
+            android:inputType="textPassword"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/insertEmailEditText"
+            app:layout_constraintVertical_bias="0.037" />
 
-        app:layout_constraintVertical_bias="0.037" />
+        <TextView
+            android:id="@+id/sign_up_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="עוד אין לך חשבון? הירשם"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/title_login"
@@ -69,7 +91,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="44dp"
         android:gravity="center"
         android:text="התחברות"
         android:textColor="@color/white"
@@ -90,9 +112,9 @@
         android:src="@drawable/arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/insertPasswordEditText"
-        app:layout_constraintVertical_bias="0.43" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.696" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

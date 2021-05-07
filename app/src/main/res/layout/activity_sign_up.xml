@@ -7,86 +7,107 @@
     android:background="@drawable/login_bg"
     tools:context=".LoginActivity">
 
-
-    <EditText
-        android:id="@+id/insertEmailEditText"
-        android:layout_width="300dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_text"
-        android:baselineAligned="false"
-        android:drawableLeft="@drawable/email"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="@string/insert_email"
-        android:inputType="textEmailAddress"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:divider="@drawable/empty_tall_divider"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        app:layout_constraintBottom_toTopOf="@+id/next_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.268" />
+        app:layout_constraintTop_toBottomOf="@+id/title_login">
 
-    <EditText
-        android:id="@+id/insertPasswordEditText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_text"
-        android:baselineAligned="false"
-        android:drawableLeft="@drawable/passsword"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="end"
-        android:hint="@string/insert_password"
-        android:inputType="textPassword"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        <EditText
+            android:id="@+id/insertEmailEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text"
+            android:baselineAligned="false"
+            android:drawableLeft="@drawable/email"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="@string/insert_email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.268" />
 
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.378" />
-
-    <EditText
-        android:id="@+id/insertPasswordEditText2"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_text"
-        android:baselineAligned="false"
-        android:drawableLeft="@drawable/passsword"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="end"
-        android:hint="@string/repeat_password"
-        android:inputType="textPassword"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="10dp"
+        <EditText
+            android:id="@+id/password_et"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text"
+            android:baselineAligned="false"
+            android:drawableLeft="@drawable/passsword"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:foregroundGravity="left"
+            android:gravity="end"
+            android:hint="@string/insert_password"
+            android:inputType="textPassword"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
 
 
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.378" />
+
+        <EditText
+            android:id="@+id/insertPasswordEditText2"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text"
+            android:baselineAligned="false"
+            android:drawableLeft="@drawable/passsword"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:foregroundGravity="left"
+            android:gravity="end"
+            android:hint="@string/repeat_password"
+            android:inputType="textPassword"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+
+
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499" />
+
+        <TextView
+            android:id="@+id/sign_in_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="כבר יש לך חשבון? היכנס"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/title_login"
@@ -123,17 +144,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.69" />
 
-    <TextView
-        android:id="@+id/sign_in_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="כבר יש לך חשבון? היכנס"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/next_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/insertPasswordEditText2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

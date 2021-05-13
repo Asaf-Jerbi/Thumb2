@@ -1,17 +1,26 @@
 package com.example.thumb2;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +41,10 @@ public class RegistrationActivity extends AppCompatActivity {
     public static final String TAG = "RegistrationActivity";
 
     //Fields
-    private ImageView armyIdCardImageView, uploadImageImageView;
+    private ImageView selfieImageView, idCardImageView, armyIdCardImageView;
+    private ImageButton takeSelfieImageButton;
     private EditText firstName_et, lastNmae_et, idNumber_et, personalNumber_et,
-    phoneNumber_et, carNumber_et, carType_et;
+            phoneNumber_et, carNumber_et, carDescription_et;
     private TextView releaseDateTextView;
     private Button nextButton;
     private Uri imageUri;
@@ -48,20 +58,24 @@ public class RegistrationActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //init views
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        armyIdCardImageView = findViewById(R.id.selfie_iv);
-        uploadImageImageView = findViewById(R.id.upload_image_button);
+        selfieImageView = findViewById(R.id.selfie_iv);
+        takeSelfieImageButton = findViewById(R.id.take_selfie_IB);
         firstName_et = findViewById(R.id.insertFirstName);
         lastNmae_et = findViewById(R.id.insertLastName);
         idNumber_et = findViewById(R.id.insertIdNumber);
         personalNumber_et = findViewById(R.id.insertPersonalNumber);
         nextButton = findViewById(R.id.next_btn);
         releaseDateTextView = findViewById(R.id.releaseDate_tv);
+        idCardImageView = findViewById(R.id.idCard_iv);
+        armyIdCardImageView = findViewById(R.id.armyIdCard_iv);
+        phoneNumber_et = findViewById(R.id.phoneNumber_et);
+        carNumber_et = findViewById(R.id.carNumber_et);
+        carDescription_et = findViewById(R.id.carDescription_et);
 
         //init firebase services
         firebaseStorage = FirebaseStorage.getInstance();
@@ -73,6 +87,16 @@ public class RegistrationActivity extends AppCompatActivity {
         userType = ((getIntent().getStringExtra("userType").toLowerCase().equals("soldier")
                 ? Helper.UserType.SOLDIER : Helper.UserType.DRIVER));
 
+        //Request for camera permissions:
+        if (ContextCompat.checkSelfPermission(RegistrationActivity.this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(RegistrationActivity.this,
+                    new String[]{
+                            Manifest.permission.CAMERA
+                    },
+                    100);
+        }
+
 
         ///////////////////   BUTTONS   ///////////////////
 
@@ -83,6 +107,26 @@ public class RegistrationActivity extends AppCompatActivity {
                 choosePicture();
             }
         });*/
+
+        // Pic id card
+        idCardImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Open Camera
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 100);
+            }
+        });
+
+        // Pic army id card
+        armyIdCardImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Open Camera
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 101);
+            }
+        });
 
         //next button
         nextButton.setOnClickListener(v -> Register());
@@ -114,6 +158,19 @@ public class RegistrationActivity extends AppCompatActivity {
         };
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            // Get Capture Image
+            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+            //Set Capture Image
+            idCardImageView.setImageBitmap(captureImage);
+        }else if(requestCode == 101) {
+            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+            armyIdCardImageView.setImageBitmap(captureImage);
+        }
+    }
 
     private void Register() {
 

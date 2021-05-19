@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/army_bg"
-    tools:context=".RegistrationActivity">
+    android:background="@color/status_bar"
+    tools:context=".DriverDetailsActivity">
 
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/driverDetails_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="-16dp"
@@ -19,8 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <ImageView
-                android:id="@+id/selfie_iv"
+                android:id="@+id/driverDetails_selfie_iv"
                 android:layout_width="190dp"
                 android:layout_height="190dp"
                 android:layout_gravity="center"
@@ -29,58 +30,36 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.03"
+                app:layout_constraintVertical_bias="0.036"
                 tools:src="@drawable/avatar" />
-
-            <ImageButton
-                android:id="@+id/take_selfie_IB"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:background="@drawable/rounded_image_view"
-                android:padding="15dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/camera_upload_image_64px"
-                app:layout_constraintBottom_toBottomOf="@id/selfie_iv"
-                app:layout_constraintEnd_toEndOf="@+id/selfie_iv"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/selfie_iv"
-                app:layout_constraintTop_toTopOf="@+id/selfie_iv"
-                app:layout_constraintVertical_bias="1.0" />
 
             <LinearLayout
 
                 android:layout_width="325dp"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/empty_tall_divider"
+                android:divider="@drawable/empty_short_divider"
                 android:orientation="vertical"
                 android:showDividers="middle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/selfie_iv"
+                app:layout_constraintTop_toBottomOf="@id/driverDetails_selfie_iv"
                 app:layout_constraintVertical_bias="0.0">
 
 
-                <EditText
-                    android:id="@+id/insertFirstName"
+                <TextView
+                    android:id="@+id/driverDetails_firstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/edit_text"
                     android:baselineAligned="false"
-                    android:drawableLeft="@drawable/first_name_tag"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
                     android:hint="@string/insert_first_name"
-                    android:inputType="text"
                     android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="19sp"
@@ -91,22 +70,16 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.268" />
 
-                <EditText
-                    android:id="@+id/insertLastName"
+                <TextView
+                    android:id="@+id/driverDetails_lastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/edit_text"
+                    android:layout_marginTop="20dp"
                     android:baselineAligned="false"
-                    android:drawableLeft="@drawable/first_name_tag"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
                     android:hint="@string/insert_last_name"
-                    android:inputType="text"
                     android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="19sp"
@@ -117,22 +90,16 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.367" />
 
-                <EditText
-                    android:id="@+id/insertPersonalNumber"
+                <TextView
+                    android:id="@+id/driverDetails_carNumber_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/edit_text"
+                    android:layout_marginTop="20dp"
                     android:baselineAligned="false"
-                    android:drawableLeft="@drawable/personal_number"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
-                    android:hint="@string/insert_personal_number"
-                    android:inputType="number"
+                    android:hint="מספר רכב"
                     android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="19sp"
@@ -141,24 +108,38 @@
                     app:layout_constraintHorizontal_bias="0.495"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.576" />
+                    app:layout_constraintVertical_bias="0.472" />
 
-                <EditText
-                    android:id="@+id/insertIdNumber"
+                <TextView
+                    android:id="@+id/driverDetails_carDescription_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/edit_text"
+                    android:layout_marginTop="20dp"
                     android:baselineAligned="false"
-                    android:drawableLeft="@drawable/id_card"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
-                    android:hint="@string/insert_id_number"
-                    android:inputType="number"
+                    android:hint="תיאור הרכב"
                     android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.472" />
+
+                <TextView
+                    android:id="@+id/driverDetails_phoneNumber_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:baselineAligned="false"
+                    android:hint="טלפון נייד"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="19sp"
@@ -171,20 +152,35 @@
 
 
                 <TextView
-                    android:id="@+id/releaseDate_tv"
+                    android:id="@+id/driverDetails_personalNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/edit_text"
+                    android:layout_marginTop="20dp"
                     android:baselineAligned="false"
-                    android:drawableLeft="@drawable/calendar"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
+                    android:hint="@string/insert_personal_number"
                     android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
-                    android:text="תאריך שחרור"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.576" />
+
+                <TextView
+                    android:id="@+id/driverDetails_idNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:baselineAligned="false"
+                    android:hint="@string/insert_id_number"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="19sp"
@@ -195,22 +191,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.472" />
 
-                <EditText
-                    android:id="@+id/phoneNumber_et"
+
+                <TextView
+                    android:id="@+id/driverDetails_releaseDate_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/edit_text"
+                    android:layout_marginTop="20dp"
                     android:baselineAligned="false"
-                    android:drawableLeft="@drawable/phone"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
-                    android:hint="מספר טלפון נייד"
-                    android:inputType="number"
+                    android:hint="@string/insert_release_date"
                     android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="19sp"
@@ -221,58 +212,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.472" />
 
-                <EditText
-                    android:id="@+id/carNumber_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/edit_text"
-                    android:baselineAligned="false"
-                    android:drawableLeft="@drawable/car"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
-                    android:hint="מספר רכב"
-                    android:inputType="number"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textSize="19sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.495"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.472" />
 
-                <EditText
-                    android:id="@+id/carDescription_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/edit_text"
-                    android:baselineAligned="false"
-                    android:drawableLeft="@drawable/car"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
-                    android:hint=" תיאור הרכב, לדוגמא: \n טויוטה פריוס כחולה"
-                    android:inputType="textMultiLine"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="10dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textSize="19sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.495"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.472" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -281,7 +222,7 @@
                     android:layout_marginBottom="10dp">
 
                     <ImageView
-                        android:id="@+id/armyIdCard_iv"
+                        android:id="@+id/driverDetails_armyIdCard_iv"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_gravity="center"
@@ -295,13 +236,13 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/idCard_iv"
+                        app:layout_constraintStart_toEndOf="@+id/driverDetails_idCard_iv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <ImageView
-                        android:id="@+id/idCard_iv"
+                        android:id="@+id/driverDetails_idCard_iv"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_gravity="center"
@@ -315,7 +256,7 @@
                         android:src="@drawable/large_id_white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/armyIdCard_iv"
+                        app:layout_constraintEnd_toStartOf="@+id/driverDetails_armyIdCard_iv"
                         app:layout_constraintHorizontal_bias="0.034"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -328,9 +269,9 @@
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/armyIdCard_iv"
-                        app:layout_constraintStart_toStartOf="@+id/armyIdCard_iv"
-                        app:layout_constraintTop_toBottomOf="@id/armyIdCard_iv"
+                        app:layout_constraintEnd_toEndOf="@+id/driverDetails_armyIdCard_iv"
+                        app:layout_constraintStart_toStartOf="@+id/driverDetails_armyIdCard_iv"
+                        app:layout_constraintTop_toBottomOf="@id/driverDetails_armyIdCard_iv"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
@@ -340,43 +281,13 @@
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/idCard_iv"
-                        app:layout_constraintStart_toStartOf="@+id/idCard_iv"
-                        app:layout_constraintTop_toBottomOf="@id/idCard_iv"
+                        app:layout_constraintEnd_toEndOf="@+id/driverDetails_idCard_iv"
+                        app:layout_constraintStart_toStartOf="@+id/driverDetails_idCard_iv"
+                        app:layout_constraintTop_toBottomOf="@id/driverDetails_idCard_iv"
                         app:layout_constraintVertical_bias="0.0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <!--                <com.google.android.material.button.MaterialButton-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:background="@drawable/rounded_button_standard"-->
-                <!--                    android:text="המשך"-->
-                <!--                    android:textStyle="bold"-->
-                <!--                    android:textSize="25dp"/>-->
-
-                <Button
-                    android:id="@+id/next_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/rounded_button_standard"
-                    android:text="המשך"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--    <androidx.core.widget.NestedScrollView-->
-    <!--        android:layout_width="330dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.493"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/armyIdCard_iv"-->
-    <!--        app:layout_constraintVertical_bias="0.0">-->

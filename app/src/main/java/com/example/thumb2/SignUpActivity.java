@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.rpc.Help;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText emailEt, passwordEt1, passwordEt2;
@@ -27,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private String email, password, password2;
     private Helper helper;
-    public enum Validation {VALID, INVALID}
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         //validate data:
 
-        if (isValidData() == Validation.INVALID) {
+        if (isValidData() == Helper.Validation.INVALID) {
             return;
         }
 
@@ -96,53 +97,53 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    private Validation isValidData() {
-        Validation emailValidation, passwordValidation;
+    private Helper.Validation isValidData() {
+        Helper.Validation emailValidation, passwordValidation;
         emailValidation = validateEmail();
         passwordValidation = validatePasswords();
-        if (emailValidation == Validation.INVALID || passwordValidation == Validation.INVALID) {
-            return Validation.INVALID;
+        if (emailValidation == Helper.Validation.INVALID || passwordValidation == Helper.Validation.INVALID) {
+            return Helper.Validation.INVALID;
         }
-        return Validation.VALID;
+        return Helper.Validation.VALID;
     }
 
-    private Validation validatePasswords() {
-        Validation validationFlag = Validation.VALID;
+    private Helper.Validation validatePasswords() {
+        Helper.Validation validationFlag = Helper.Validation.VALID;
         //password1:
         //check if empty
         if (TextUtils.isEmpty(password)) {
             passwordEt1.setError("יש להזין סיסמא");
-            validationFlag = Validation.INVALID;
+            validationFlag = Helper.Validation.INVALID;
             //validate length
         } else if (password.length() < 4) {
             passwordEt1.setError("על הסיסמא להכיל 4 תווים לפחות");
-            validationFlag = Validation.INVALID;
+            validationFlag = Helper.Validation.INVALID;
         }
 
         //password2:
         //check if empty
         if (TextUtils.isEmpty(password2)) {
             passwordEt2.setError("יש להזין סיסמא בשנית");
-            validationFlag = Validation.INVALID;
+            validationFlag = Helper.Validation.INVALID;
         } else if (!password.equals(password2)) {
             passwordEt2.setError("הסיסמאות אינן זהות");
-            validationFlag = Validation.INVALID;
+            validationFlag = Helper.Validation.INVALID;
         }
         return validationFlag;
     }
 
-    private Validation validateEmail() {
+    private Helper.Validation validateEmail() {
         //check if empty
         if (TextUtils.isEmpty(email)) {
             this.emailEt.setError("לא הוזנה כתובת מייל");
-            return Validation.INVALID;
+            return Helper.Validation.INVALID;
         }
         //check if valid
         if (!isValidEmail(email)) {
             this.emailEt.setError("כתובת המייל שהוזנה אינה חוקית");
-            return Validation.INVALID;
+            return Helper.Validation.INVALID;
         }
-        return Validation.VALID;
+        return Helper.Validation.VALID;
     }
 
     private boolean isValidEmail(CharSequence target) {

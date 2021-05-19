@@ -61,6 +61,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // Needed for liveness check (while taking selfie)
+    implementation 'com.google.firebase:firebase-ml-vision:19.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'id.privy.livenessfirebasesdk:livenessDetection:0.0.6'
+
 
 /*    //note: I added this dependency in order to enable using Java.time according to
     //this manual here: https://stackoverflow.com/a/56696502

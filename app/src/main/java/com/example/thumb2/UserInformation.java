@@ -1,5 +1,7 @@
 package com.example.thumb2;
 
+import android.net.Uri;
+
 import java.time.LocalDate;
 
 public class UserInformation {
@@ -7,13 +9,43 @@ public class UserInformation {
     //Fields
     private String firstName;
     private String lastName;
-    private int personalNumber;
-    private int idNumber;
-    private LocalDate releaseDate;
-    private Integer carNumber;
+    private String personalNumber;
+    private String idNumber;
+    private String releaseDate;
+    private String carNumber;
     private String phoneNumber;
+    private String carDescription;
     private Helper.UserType userType;
 
+    // ! ! ! ! ! !
+    //NOTE: THIS CLASS MUST HAVE EMPTY CONSTRUCTOR, GETTERS AND SETTERS. DO NOT MODIFY IT.
+    // ! ! ! ! ! !
+
+    //Constructors
+    public UserInformation() {
+    }
+
+    public UserInformation(String firstName, String lastName, String personalNumber,
+                           String idNumber, String releaseDate, String carNumber,
+                           String phoneNumber, String carDescription, Helper.UserType userType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.personalNumber = personalNumber;
+        this.idNumber = idNumber;
+        this.releaseDate = releaseDate;
+        this.carNumber = carNumber;
+        this.phoneNumber = phoneNumber;
+        this.carDescription = carDescription;
+        this.userType = userType;
+    }
+
+    public void setCarDescription(String carDescription) {
+        this.carDescription = carDescription;
+    }
+
+    public String getCarDescription() {
+        return carDescription;
+    }
 
     public void setUserType(Helper.UserType userType) {
         this.userType = userType;
@@ -23,10 +55,6 @@ public class UserInformation {
         return userType;
     }
 
-    // ! ! ! ! ! !
-    //NOTE: THIS CLASS MUST HAVE EMPTY CONSTRUCTOR, GETTERS AND SETTERS. DO NOT MODIFY IT.
-    // ! ! ! ! ! !
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -35,27 +63,11 @@ public class UserInformation {
         return phoneNumber;
     }
 
-    public UserInformation(String firstName, String lastName, int personalNumber, int idNumber,
-                           LocalDate releaseDate, Integer carNumber, String phoneNumber,
-                           Helper.UserType userType) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.personalNumber = personalNumber;
-        this.idNumber = idNumber;
-        this.releaseDate = releaseDate;
-        this.carNumber = carNumber;
-        this.phoneNumber = phoneNumber;
-        this.userType = userType;
-    }
-
-    public UserInformation() {
-    }
-
-    public int getIdNumber() {
+    public String getIdNumber() {
         return idNumber;
     }
 
-    public int getPersonalNumber() {
+    public String getPersonalNumber() {
         return personalNumber;
     }
 
@@ -67,19 +79,19 @@ public class UserInformation {
         return lastName;
     }
 
-    public LocalDate getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public Integer getCarNumber() {
+    public String getCarNumber() {
         return carNumber;
     }
 
-    public void setIdNumber(int idNumber) {
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
 
-    public void setPersonalNumber(int personalNumber) {
+    public void setPersonalNumber(String personalNumber) {
         this.personalNumber = personalNumber;
     }
 
@@ -91,11 +103,11 @@ public class UserInformation {
         this.lastName = lastName;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public void setCarNumber(Integer carNumber) {
+    public void setCarNumber(String carNumber) {
         this.carNumber = carNumber;
     }
 }

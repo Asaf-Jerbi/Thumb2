@@ -13,12 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/ThumbStyleTwo"
         tools:replace="android:theme">
-        <activity android:name=".DriverDetailsActivity"></activity>
+        <activity android:name=".MainScreenActivity"></activity>
+        <activity android:name=".DriverDetailsActivity" />
         <activity android:name=".ExceptionDebug" />
-        <activity
-            android:name=".MainScreenActivity"
-            android:label="@string/title_activity_main_screen"
-            android:theme="@style/ThumbStyleTwo.NoActionBar" />
         <activity
             android:name=".RegistrationActivity"
             android:windowSoftInputMode="adjustResize" />

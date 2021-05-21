@@ -172,6 +172,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
+
         //next button
         nextButton.setOnClickListener(v -> Register());
 
@@ -244,6 +245,10 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void Register() {
+
+        // collect data from fields (I took other fields' data in their validation methods)
+        carDescription = carDescription_et.getText().toString() != null ?
+                carDescription_et.getText().toString() : "";
 
         //validate data:
         if (isValidData() == Helper.Validation.INVALID) {

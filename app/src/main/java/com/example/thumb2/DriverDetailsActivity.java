@@ -3,6 +3,8 @@ package com.example.thumb2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,19 +22,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.concurrent.TimeUnit;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class DriverDetailsActivity extends AppCompatActivity {
 
     private UserInformation userInformation;
-    private String userId = FirebaseAuth.getInstance().getUid();
+    private String userToShowInformationOn = FirebaseAuth.getInstance().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_details);
-
+        if (getIntent().getStringExtra("showBarcode").toLowerCase().equals("yes")) {
+            displayUserBarcode();
+            this.userToShowInformationOn = getIntent().getStringExtra("userIdFromBarcodeScanner");
+        }
         TextView firstName_tv = findViewById(R.id.driverDetails_firstName);
         TextView lastName_tv = findViewById(R.id.driverDetails_lastName);
         TextView carNumber_tv = findViewById(R.id.driverDetails_carNumber_et);
@@ -48,17 +55,9 @@ public class DriverDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userInformation = snapshot.getValue(UserInformation.class);
-
-                //I STOPPED HERE:
-                // i need to finish to display te user's data AS I WANT IT TO BE DISPLAYED! NICE
-                // AND ELEGANT ! ! !
-                // to create barcode
-                // to create barcode scanner
-                // to create google map
-
-                firstName_tv.setText(userInformation.getFirstName());
-                lastName_tv.setText(userInformation.getLastName());
-                carNumber_tv.setText(userInformation.getCarNumber());
+                firstName_tv.setText("שם פרטי: " + userInformation.getFirstName());
+                lastName_tv.setText("שם משפחה: " + userInformation.getLastName());
+                carNumber_tv.setText("מספר רכב: " + userInformation.getCarNumber());
                 carDesc_tv.setText("תיאור הרכב: " + userInformation.getCarDescription());
             }
 
@@ -70,7 +69,7 @@ public class DriverDetailsActivity extends AppCompatActivity {
 
         // Load user id and army id.
 
-        String url = "gs://thumb2.appspot.com/users/" + userId + "/images/";
+        String url = "gs://thumb2.appspot.com/users/" + userToShowInformationOn + "/images/";
         StorageReference armyIdCardRef = FirebaseStorage.getInstance().
                 getReferenceFromUrl(url + "armyIdCard.jpg");
 
@@ -95,9 +94,53 @@ public class DriverDetailsActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "אירעה בעיה בטעינת התמונה",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
 
+
+    public void displayUserBarcode() {
+        ImageView image = new ImageView(this);
+        Bitmap barcode = stringToBitmapBarcode(this.userToShowInformationOn);
+
+        if (barcode != null) {
+            image.setImageBitmap(barcode);
+            new AlertDialog.Builder(DriverDetailsActivity.this)
+                    .setTitle("הצג מסך זה לחייל")
+                    .setView(image)
+                    .setPositiveButton("הצגתי, אפשר להמשיך", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //something to do when clicking
+                        }
+                    }).show();
+        } else {
+            new AlertDialog.Builder(DriverDetailsActivity.this)
+                    .setTitle("משהו השתבש :/ ")
+                    .setPositiveButton("סגור", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Continue with delete operation
+                        }
+                    }).setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
+
+    }
+
+    MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+    private Bitmap stringToBitmapBarcode(String toEncode) {
+        Bitmap bitmap = null;
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(toEncode, BarcodeFormat.QR_CODE,
+                    550, 550);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
 }

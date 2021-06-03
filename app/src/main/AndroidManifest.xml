@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/ThumbStyleTwo"
         tools:replace="android:theme">
-        <activity android:name=".MainScreenActivity"></activity>
+        <activity android:name=".QrScannerActivity"></activity>
+        <activity android:name=".MainScreenActivity" />
         <activity android:name=".DriverDetailsActivity" />
         <activity android:name=".ExceptionDebug" />
         <activity

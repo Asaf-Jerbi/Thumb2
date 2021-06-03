@@ -25,7 +25,7 @@
                 android:layout_width="190dp"
                 android:layout_height="190dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rounded_image_view"
+                android:background="@drawable/rounded_image_with_shadow"
                 android:padding="40dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -35,6 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.036"
                 tools:src="@drawable/avatar" />
+
 
             <LinearLayout
 
@@ -70,6 +71,11 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.268" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray" />
+
                 <TextView
                     android:id="@+id/driverDetails_lastName"
                     android:layout_width="match_parent"
@@ -89,6 +95,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.367" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray" />
 
                 <TextView
                     android:id="@+id/driverDetails_carNumber_et"
@@ -110,6 +121,11 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.472" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray" />
+
                 <TextView
                     android:id="@+id/driverDetails_carDescription_et"
                     android:layout_width="match_parent"
@@ -130,46 +146,55 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.472" />
 
-                    <ImageView
-                        android:id="@+id/driverDetails_armyIdCard_iv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="30dp"
-                        android:background="@drawable/standrd_image_view"
-                        android:padding="20dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/large_id_white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/driverDetails_idCard_iv"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray" />
 
-                    <ImageView
-                        android:id="@+id/driverDetails_idCard_iv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="46dp"
-                        android:layout_marginBottom="30dp"
-                        android:background="@drawable/standrd_image_view"
-                        android:padding="20dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/large_id_white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/driverDetails_armyIdCard_iv"
-                        app:layout_constraintHorizontal_bias="0.034"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/driverDetails_armyIdCard_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/standrd_image_view"
+                    android:padding="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/large_id_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/driverDetails_idCard_iv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <ImageView
+                    android:id="@+id/driverDetails_idCard_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="46dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/standrd_image_view"
+                    android:padding="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/large_id_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/driverDetails_armyIdCard_iv"
+                    app:layout_constraintHorizontal_bias="0.034"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
 
             </LinearLayout>

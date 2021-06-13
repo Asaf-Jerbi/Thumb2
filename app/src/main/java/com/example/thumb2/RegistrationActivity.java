@@ -247,8 +247,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private void Register() {
 
         // collect data from fields (I took other fields' data in their validation methods)
-        carDescription = carDescription_et.getText().toString() != null ?
-                carDescription_et.getText().toString() : "";
+        if (carDescription_et.getText().toString().equals("")) {
+            carDescription = "לא הוזן תיאור";
+        } else {
+            carDescription = carDescription_et.getText().toString();
+        }
 
         //validate data:
         if (isValidData() == Helper.Validation.INVALID) {

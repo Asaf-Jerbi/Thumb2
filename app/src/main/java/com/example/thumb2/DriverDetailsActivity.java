@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,14 +32,19 @@ public class DriverDetailsActivity extends AppCompatActivity {
 
     private UserInformation userInformation;
     private String userToShowInformationOn = FirebaseAuth.getInstance().getUid();
+    public static final String TAG = "DriverDetailsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_details);
+
+        // user wants to take a traveler, so the barcode need to be displayed:
         if (getIntent().getStringExtra("showBarcode").toLowerCase().equals("yes")) {
             displayUserBarcode();
-            this.userToShowInformationOn = getIntent().getStringExtra("userIdFromBarcodeScanner");
+        } else if (getIntent().getStringExtra("showBarcode").toLowerCase().equals("no")) {
+            // user scanned qr code, and want to get user details page:
+            this.userToShowInformationOn = getIntent().getStringExtra("stringFromQrScanner");
         }
         TextView firstName_tv = findViewById(R.id.driverDetails_firstName);
         TextView lastName_tv = findViewById(R.id.driverDetails_lastName);
@@ -47,24 +53,49 @@ public class DriverDetailsActivity extends AppCompatActivity {
         ImageView id_iv = findViewById(R.id.driverDetails_idCard_iv);
         ImageView armyId_iv = findViewById(R.id.driverDetails_armyIdCard_iv);
 
-        // Load user details
-        DatabaseReference dbRefToUsers = FirebaseDatabase.getInstance().getReference().child("users")
-                .child(FirebaseAuth.getInstance().getUid());
+        // Load user details from firebase:
+        DatabaseReference dbRefToUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
         dbRefToUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userInformation = snapshot.getValue(UserInformation.class);
-                firstName_tv.setText("שם פרטי: " + userInformation.getFirstName());
-                lastName_tv.setText("שם משפחה: " + userInformation.getLastName());
-                carNumber_tv.setText("מספר רכב: " + userInformation.getCarNumber());
-                carDesc_tv.setText("תיאור הרכב: " + userInformation.getCarDescription());
+                //TODO: ADD ALERT IF  BARCODE WASN'T RECOGNIZE AS A VALID USER!
+
+                // If user doesn't exist in system (means the qr is fake) - open alert:
+                try {
+                    if (!snapshot.hasChild(userToShowInformationOn)) {
+                        new AlertDialog.Builder(DriverDetailsActivity.this)
+                                .setTitle("חירום חירום חירום")
+                                .setPositiveButton("הצילו!", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //something to do when clicking
+                                    }
+                                }).show();
+                    } else {
+                        userInformation = snapshot.getValue(UserInformation.class);
+                        firstName_tv.setText("שם פרטי: " + userInformation.getFirstName());
+                        lastName_tv.setText("שם משפחה: " + userInformation.getLastName());
+                        carNumber_tv.setText("מספר רכב: " + userInformation.getCarNumber());
+                        carDesc_tv.setText("תיאור הרכב: " + userInformation.getCarDescription());
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "onDataChange: " + e.toString());
+                    new AlertDialog.Builder(DriverDetailsActivity.this)
+                            .setTitle("חירום חירום חירום")
+                            .setPositiveButton("הצילו!", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //something to do when clicking
+                                }
+                            }).show();
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
+
         });
 
         // Load user id and army id.

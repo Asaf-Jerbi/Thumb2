@@ -8,25 +8,51 @@
 
     <Button
         android:id="@+id/getSoldierUpForRide_btn"
-        android:layout_width="163dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
+        android:background="@drawable/default_button"
+        android:orientation="vertical"
         android:text="העלה חייל לטרמפ"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.241" />
+        app:layout_constraintVertical_bias="0.059" />
 
     <Button
         android:id="@+id/goUpForRide_btn"
-        android:layout_width="163dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginTop="4dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/default_button"
         android:text="עלה לטרמפ"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/getSoldierUpForRide_btn"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goUpForRide_btn"
+        app:layout_constraintVertical_bias="0.963"
+        tools:context=".MainScreenActivityTwo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

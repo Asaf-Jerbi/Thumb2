@@ -11,6 +11,9 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.zxing.Result;
 
 public class QrScannerActivity extends AppCompatActivity {
@@ -36,9 +39,9 @@ public class QrScannerActivity extends AppCompatActivity {
                 });*/
 
                 Intent intent = new Intent(QrScannerActivity.this, DriverDetailsActivity.class);
-                startActivity(intent);
                 intent.putExtra("showBarcode", "no");
-                intent.putExtra("userIdFromBarcodeScanner", result.getText());
+                intent.putExtra("stringFromQrScanner", result.getText());
+                startActivity(intent);
                 finish();
             }
         });

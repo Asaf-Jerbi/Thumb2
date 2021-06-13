@@ -42,7 +42,7 @@ public class QrScannerActivity extends AppCompatActivity {
                 intent.putExtra("showBarcode", "no");
                 intent.putExtra("stringFromQrScanner", result.getText());
                 startActivity(intent);
-                finish();
+//                finish();
             }
         });
         scannerView.setOnClickListener(new View.OnClickListener() {

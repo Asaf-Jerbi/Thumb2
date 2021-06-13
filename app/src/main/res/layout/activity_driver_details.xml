@@ -4,16 +4,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/status_bar"
+    android:background="@drawable/army_bg"
     tools:context=".DriverDetailsActivity">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recognization_approval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/driverDetails_scrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="האם אתה מזהה את הנהג שמולך?"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/buttons_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/buttons_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+            <Button
+                android:id="@+id/yes_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/alert_ok_button"
+                android:text="כן"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <!--            <Button-->
+            <!--                android:id="@+id/try_again_btn"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginHorizontal="5dp"-->
+            <!--                android:layout_marginBottom="40dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:background="@drawable/alert_regular_button"-->
+            <!--                android:text="נסה שוב"-->
+            <!--                android:textAlignment="center"-->
+            <!--                android:textSize="20dp"-->
+            <!--                android:textStyle="bold" />-->
+
+            <Button
+                android:id="@+id/sos_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/sos_button"
+                android:text="לא, דווח חירום"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:id="@+id/driverDetails_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="-259dp">
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recognization_approval">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,11 +115,11 @@
                 app:layout_constraintVertical_bias="0.036"
                 tools:src="@drawable/avatar" />
 
-
             <LinearLayout
-
+                android:id="@+id/detalis_container"
                 android:layout_width="325dp"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:divider="@drawable/empty_short_divider"
                 android:orientation="vertical"
                 android:showDividers="middle"
@@ -61,8 +140,8 @@
                     android:hint="@string/insert_first_name"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/soft_gray"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="19sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -86,8 +165,8 @@
                     android:hint="@string/insert_last_name"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/soft_gray"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="19sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -111,8 +190,8 @@
                     android:hint="מספר רכב"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/soft_gray"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="19sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -136,8 +215,8 @@
                     android:hint="תיאור הרכב"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/soft_gray"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="19sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -163,7 +242,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="30dp"
-                    android:background="@drawable/standrd_image_view"
+                    android:adjustViewBounds="true"
+                    android:background="@android:drawable/dialog_holo_dark_frame"
                     android:padding="20dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/large_id_white"
@@ -184,7 +264,8 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="46dp"
                     android:layout_marginBottom="30dp"
-                    android:background="@drawable/standrd_image_view"
+                    android:adjustViewBounds="true"
+                    android:background="@android:drawable/dialog_holo_dark_frame"
                     android:padding="20dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/large_id_white"

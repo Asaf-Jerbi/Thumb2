@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutDialogContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -19,7 +21,7 @@
             android:id="@+id/alert_title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="הברקוד שנסרק אינו תואם לאף משתמש"
+            android:text="@string/unrecognizedBarcode"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="50sp"
-            app:layout_constraintBottom_toTopOf="@id/cancel_btn"
+            app:layout_constraintBottom_toTopOf="@id/sos_btn"
             app:layout_constraintTop_toBottomOf="@id/alert_title_tv" />
 
 
@@ -41,11 +43,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
             android:background="@drawable/alert_regular_button"
-            android:text="נסה שוב"
+            android:text="@string/tryAgain"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cancel_btn"
+            app:layout_constraintStart_toEndOf="@+id/sos_btn"
             app:layout_constraintTop_toBottomOf="@+id/alert_title_tv"
             app:layout_constraintVertical_bias="1.0" />
 
@@ -54,28 +56,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:background="@drawable/alert_red_button"
-            android:text="לחצן חירום"
-            android:textSize="15sp"
+            android:background="@drawable/sos_button"
+            android:text="@string/sosButton"
             android:textColor="@color/white"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cancel_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alert_title_tv"
-            app:layout_constraintVertical_bias="1.0" />
 
-        <Button
-            android:id="@+id/cancel_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/alert_regular_button"
-            android:text="ביטול"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/try_again_btn"
-            app:layout_constraintStart_toEndOf="@id/sos_btn"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alert_title_tv"
             app:layout_constraintVertical_bias="1.0" />
 

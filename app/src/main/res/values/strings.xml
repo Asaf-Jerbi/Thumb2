@@ -20,7 +20,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unrecognizedBarcode">הברקוד שנסרק אינו תואם לאף משתמש</string>
+    <string name="sosButton">אני בסכנה</string>
+    <string name="cancel">ביטול</string>
+    <string name="tryAgain">נסה שוב</string>
 
 </resources>

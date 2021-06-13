@@ -2,18 +2,19 @@ package com.example.thumb2;
 
 import android.net.Uri;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class UserInformation {
+public class UserInformation implements Serializable {
 
     //Fields
+    private String carNumber;
     private String firstName;
+    private String idNumber;
     private String lastName;
     private String personalNumber;
-    private String idNumber;
-    private String releaseDate;
-    private String carNumber;
     private String phoneNumber;
+    private String releaseDate;
     private String carDescription;
     private Helper.UserType userType;
 

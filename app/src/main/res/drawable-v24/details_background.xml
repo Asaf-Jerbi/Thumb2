@@ -4,14 +4,12 @@
             <item android:left="5dp" android:start="5dp">
                 <shape>
                     <corners android:radius="30dp" />
-                    <solid android:color="#008A8A8A" />
+                    <solid android:color="#595353" />
                 </shape>
             </item>
-            <item android:bottom="2dp" android:right="2dp">
+            <item android:bottom="7dp" android:right="7dp">
                 <shape>
-<!--                    <gradient android:angle="270" android:endColor="#CBFFFFFF" android:startColor="#FFFFFF" />-->
-                    <gradient android:startColor="@color/transperent_white" android:centerColor="@color/transperent_white" android:endColor="@color/transperent_white"/>
-                    <stroke android:color="#FFDD00" android:width="2dp"></stroke>
+                    <gradient android:angle="270" android:endColor="@color/green" android:startColor="@color/green" />
                     <corners android:radius="30dp" />
                     <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
                 </shape>

@@ -42,7 +42,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
     private UserInformation userInformation;
     private String userToShowInformationOn = FirebaseAuth.getInstance().getUid();
     public static final String TAG = "DriverDetailsActivity";
-    private boolean isImageFitToScreen;
+    private Button approveDriverButton;
+    private Button sosButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +66,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
         TextView carDesc_tv = findViewById(R.id.driverDetails_carDescription_et);
         ImageView id_iv = (ImageView) findViewById(R.id.driverDetails_idCard_iv);
         ImageView armyId_iv = findViewById(R.id.driverDetails_armyIdCard_iv);
-        Button approveDriver_btn = (Button) findViewById(R.id.yes_btn);
-        Button sos_btn = (Button) findViewById(R.id.sos_btn);
-
+        approveDriverButton = (Button) findViewById(R.id.yes_btn);
+        sosButton = (Button) findViewById(R.id.sos_btn);
 
         // Load user details from firebase:
         DatabaseReference dbRefToUsers = FirebaseDatabase.getInstance().getReference().child("users");
@@ -111,14 +111,13 @@ public class DriverDetailsActivity extends AppCompatActivity {
 
         });
 
-        // Define buttons behaviour
-        approveDriver_btn.setOnClickListener(new View.OnClickListener() {
+//        // Define buttons behaviour
+        approveDriverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DriverDetailsActivity.this, onRideActivity.class);
                 intent.putExtra("driverDetails", userInformation);
                 startActivity(intent);
-                finish();
             }
         });
 

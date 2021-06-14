@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="50sp"
-            app:layout_constraintBottom_toTopOf="@id/sos_btn"
+            app:layout_constraintBottom_toTopOf="@id/alert_dialog_sos_btn"
             app:layout_constraintTop_toBottomOf="@id/alert_title_tv" />
 
 
@@ -47,12 +47,12 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/sos_btn"
+            app:layout_constraintStart_toEndOf="@+id/alert_dialog_sos_btn"
             app:layout_constraintTop_toBottomOf="@+id/alert_title_tv"
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
-            android:id="@+id/sos_btn"
+            android:id="@+id/alert_dialog_sos_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"

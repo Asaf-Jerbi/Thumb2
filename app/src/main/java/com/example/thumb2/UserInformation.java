@@ -111,4 +111,8 @@ public class UserInformation implements Serializable {
     public void setCarNumber(String carNumber) {
         this.carNumber = carNumber;
     }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
 }

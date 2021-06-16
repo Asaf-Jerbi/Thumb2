@@ -38,7 +38,7 @@
 
 
         <Button
-            android:id="@+id/try_again_btn"
+            android:id="@+id/alert_dialog_try_again_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"

@@ -136,18 +136,18 @@ public class onRideActivity extends AppCompatActivity implements OnMapReadyCallb
 
 
         //todo: remove me:
-        TimerTask task2 = new TimerTask() {
-            @Override
-            public void run() {
-                LatLng barIlan = new LatLng(32.069090, 34.843549);
-                googleMap.addMarker(new MarkerOptions().position(barIlan).title("Bar-Ilan University"));
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(barIlan, 12.0f));
-            }
-        };
-
-        // update map marker according to real location every 5000 milliseconds.
-        Timer timer2 = new Timer();
-        timer2.schedule(task2, 4000, 12000);
+//        TimerTask task2 = new TimerTask() {
+//            @Override
+//            public void run() {
+//                LatLng barIlan = new LatLng(32.069090, 34.843549);
+//                googleMap.addMarker(new MarkerOptions().position(barIlan).title("Bar-Ilan University"));
+//                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(barIlan, 12.0f));
+//            }
+//        };
+//
+//        // update map marker according to real location every 5000 milliseconds.
+//        Timer timer2 = new Timer();
+//        timer2.schedule(task2, 4000, 12000);
 
 
     }

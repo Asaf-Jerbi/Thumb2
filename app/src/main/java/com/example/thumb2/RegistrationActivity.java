@@ -7,19 +7,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -39,17 +35,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.rpc.Help;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Objects;
 
 import id.privy.livenessfirebasesdk.LivenessApp;
-import id.privy.livenessfirebasesdk.entity.LivenessItem;
-import id.privy.livenessfirebasesdk.listener.PrivyCameraLivenessCallBackListener;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -76,6 +67,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final String $LEFT_MOTION_INSTRUCTION = "הבט/י שמאלה";
     private static final String $RIGHT_MOTION_INSTRUCTION = "הבט/י ימינה";
     private LivenessApp livenessApp;
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
 
     @Override
@@ -118,39 +111,48 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
 
-        ///////////////////   BUTTONS   ///////////////////
-
-        //upload image button
-        /*uploadImageImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosePicture();
-            }
-        });*/
-
-        // get selfie and check liveness
+        // buttons configuration
         takeSelfieImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                livenessApp = new LivenessApp.Builder(RegistrationActivity.this)
-                        .setDebugMode(false) //to enable face landmark detection
-                        .setSuccessText($SUCCESSTEXT)
-                        .setInstructions($INSTRUCTIONS)
-                        .setMotionInstruction($LEFT_MOTION_INSTRUCTION, $RIGHT_MOTION_INSTRUCTION).build();
-                livenessApp.start(new PrivyCameraLivenessCallBackListener() {
-                    @Override
-                    public void success(LivenessItem livenessItem) {
-                        //set image in imageView
-                        selfieImageView.setImageBitmap(livenessItem.getImageBitmap());
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                    } else {
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
-
-                    @Override
-                    public void failed(Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
+                }
             }
         });
+
+//todo: to bting this back later. for now, I have major problems of versions conflicts.
+/*        takeSelfieImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    livenessApp = new LivenessApp.Builder(RegistrationActivity.this)
+                            .setDebugMode(false) //to enable face landmark detection
+                            .setSuccessText($SUCCESSTEXT)
+                            .setInstructions($INSTRUCTIONS)
+                            .setMotionInstruction($LEFT_MOTION_INSTRUCTION, $RIGHT_MOTION_INSTRUCTION).build();
+                    livenessApp.start(new PrivyCameraLivenessCallBackListener() {
+                        @Override
+                        public void success(LivenessItem livenessItem) {
+                            //set image in imageView
+                            selfieImageView.setImageBitmap(livenessItem.getImageBitmap());
+                        }
+
+                        @Override
+                        public void failed(Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "onClick: " + e.toString());
+                }
+            }
+        });*/
 
         // Pic id card
         idCardImageView.setOnClickListener(new View.OnClickListener() {
@@ -205,42 +207,27 @@ public class RegistrationActivity extends AppCompatActivity {
         };
     }
 
-//    public Bitmap getCroppedBitmap(Bitmap bitmap) {
-//        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-//                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(output);
-//
-//        final int color = 0xff424242;
-//        final Paint paint = new Paint();
-//        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-//        paint.setAntiAlias(true);
-//        canvas.drawARGB(0, 0, 0, 0);
-//        paint.setColor(color);
-//        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-//        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-//                bitmap.getWidth() / 2, paint);
-//        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-//        canvas.drawBitmap(bitmap, rect, rect, paint);
-//        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
-//        //return _bmp;
-//        return output;
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //uploading id
-        if (requestCode == 100) {
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             // Get Capture Image
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             //Set Capture Image
-            uploadImage(captureImage, idCardImageView, "idCard.jpg");
             idCardImageView.setImageBitmap(captureImage);
-        } else if (requestCode == 101) {
+            //upload to firebase
+            uploadImage(captureImage, idCardImageView, "idCard.png");
+        } else if (requestCode == 101 && resultCode == Activity.RESULT_OK) {
             //uploading army id
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
-            uploadImage(captureImage, armyIdCardImageView, "armyIdCard.jpg");
             armyIdCardImageView.setImageBitmap(captureImage);
+            uploadImage(captureImage, armyIdCardImageView, "armyIdCard.png");
+        } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+            selfieImageView.setImageBitmap(captureImage);
+            uploadImage(captureImage, selfieImageView, "selfie.png");
         }
     }
 
@@ -255,8 +242,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
         //validate data:
         if (isValidData() == Helper.Validation.INVALID) {
-            //todo: remove me
-            Toast.makeText(RegistrationActivity.this, "משהו בשדות לא עובר ואלידציה", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this,
+                    "הפרטים אינם תקינים", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -268,7 +255,10 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(RegistrationActivity.this, "נתוני המשתמש נשמרו בהצלחה!",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -281,7 +271,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void uploadImage(Bitmap bitmap, ImageView imageView, String imageName) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] data = baos.toByteArray();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -312,7 +302,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private Helper.Validation isValidData() {
         Helper.Validation firstNameValidation, lastNameValidation,
                 personalNumberValidation, idNumberValidation, releaseDateValidation,
-                carNumberValidation, phoneNumberValidation, idCapture, armyIdCapture;
+                carNumberValidation, phoneNumberValidation, idCaptureValidation,
+                armyIdCaptureValidation;
 
         firstNameValidation = validateFirstName();
         lastNameValidation = validateLastName();
@@ -321,8 +312,8 @@ public class RegistrationActivity extends AppCompatActivity {
         releaseDateValidation = validateReleaseDate();
         carNumberValidation = validateCarNumber();
         phoneNumberValidation = validatePhoneNumber();
-        //idCapture = validateIdCaptureUpload();
-        //armyIdCapture = validateArmyIdCaptureUpload();
+        idCaptureValidation = validateImageUploaded(idCardImageView);
+        armyIdCaptureValidation = validateImageUploaded(armyIdCardImageView);
 
         if (firstNameValidation == Helper.Validation.INVALID
                 || lastNameValidation == Helper.Validation.INVALID
@@ -330,11 +321,29 @@ public class RegistrationActivity extends AppCompatActivity {
                 || idNumberValidation == Helper.Validation.INVALID
                 || releaseDateValidation == Helper.Validation.INVALID
                 || carNumberValidation == Helper.Validation.INVALID
-                || phoneNumberValidation == Helper.Validation.INVALID) {
+                || phoneNumberValidation == Helper.Validation.INVALID
+                || idCaptureValidation == Helper.Validation.INVALID
+                || armyIdCaptureValidation == Helper.Validation.INVALID) {
             return Helper.Validation.INVALID;
         } else {
             return Helper.Validation.VALID;
         }
+    }
+
+
+    // this method gets image view and if it's frame is green - returns Valid. Otherwise - Invalid.
+    // (sure this method relevant to image views for uploaded images that get diiferent
+    // frame for different upload situations. (successful upload --> green frame)
+    private Helper.Validation validateImageUploaded(ImageView imageView) {
+        if (imageView.getBackground().getConstantState()
+                == getResources().getDrawable(R.drawable.green_frame_image_view).getConstantState()) {
+            // if image frame is green (means image uploaded successfully)
+            return Helper.Validation.VALID;
+        }
+
+        // otherwise, change frame to red and return invalid
+        imageView.setBackgroundResource(R.drawable.red_frame_image_view);
+        return Helper.Validation.INVALID;
     }
 
     private Helper.Validation validatePhoneNumber() {
@@ -373,9 +382,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Helper.Validation validateReleaseDate() {
 
         if (this.releaseDateString == null) {
-            //todo: remove me
-            Toast.makeText(RegistrationActivity.this, "התאריך נאל", Toast.LENGTH_LONG).show();
-
             this.releaseDateTextView.setError("יש לבחור תאריך");
             return Helper.Validation.INVALID;
         }
@@ -424,42 +430,4 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         return Helper.Validation.VALID;
     }
-    //Code for uploading image from gallery! not from
-    /*    private void choosePicture() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
-        uploadImage();
-    }
-
-    private void uploadImage() {
-        // Create a reference to 'armyIds/userId.jpg'
-        StorageReference armyIdsImagesRef = storageReference.child("armyIds/" +
-                firebaseAuth.getCurrentUser().getUid() + ".jpg");
-        armyIdsImagesRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            armyIdCardImageView.setImageURI(imageUri);
-        }
-
-    }*/
-
-
 }

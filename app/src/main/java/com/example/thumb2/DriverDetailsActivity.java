@@ -3,14 +3,20 @@ package com.example.thumb2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,6 +72,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
         TextView carDesc_tv = findViewById(R.id.driverDetails_carDescription_et);
         ImageView id_iv = (ImageView) findViewById(R.id.driverDetails_idCard_iv);
         ImageView armyId_iv = findViewById(R.id.driverDetails_armyIdCard_iv);
+        ImageView selfie_iv = findViewById(R.id.driverDetails_selfie_iv);
+
         approveDriverButton = (Button) findViewById(R.id.yes_btn);
         sosButton = (Button) findViewById(R.id.sos_btn);
 
@@ -90,13 +98,17 @@ public class DriverDetailsActivity extends AppCompatActivity {
                         // Load images from storage: user_id + army_id:
                         String url = "gs://thumb2.appspot.com/users/" + userToShowInformationOn + "/images/";
                         StorageReference armyIdCardRef = FirebaseStorage.getInstance().
-                                getReferenceFromUrl(url + "armyIdCard.jpg");
+                                getReferenceFromUrl(url + "armyIdCard.png");
 
                         StorageReference idCardRef = FirebaseStorage.getInstance().
-                                getReferenceFromUrl(url + "idCard.jpg");
+                                getReferenceFromUrl(url + "idCard.png");
+
+                        StorageReference selfieRef = FirebaseStorage.getInstance().
+                                getReferenceFromUrl(url + "selfie.png");
 
                         loadImageToImageView(armyIdCardRef, armyId_iv);
                         loadImageToImageView(idCardRef, id_iv);
+                        loadImageToImageView(selfieRef, selfie_iv);
                     }
                 } catch (Exception e) {
                     showUnrecognizedBarcodeAlert();
@@ -112,13 +124,10 @@ public class DriverDetailsActivity extends AppCompatActivity {
         });
 
 //        // Define buttons behaviour
-        approveDriverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DriverDetailsActivity.this, onRideActivity.class);
-                intent.putExtra("driverDetails", userInformation);
-                startActivity(intent);
-            }
+        approveDriverButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DriverDetailsActivity.this, onRideActivity.class);
+            intent.putExtra("driverDetails", userInformation);
+            startActivity(intent);
         });
 
     }
@@ -132,33 +141,23 @@ public class DriverDetailsActivity extends AppCompatActivity {
         builder.setView(view);
         final AlertDialog alertDialog = builder.create();
 
-        view.findViewById(R.id.try_again_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // go back to qr scanner that was open earlier
-                finish();
-            }
+        Button alertDialogTryAgainButton = view.findViewById(R.id.alert_dialog_try_again_btn);
+        alertDialogTryAgainButton.setOnClickListener(v -> {
+            // go back to qr scanner that was open earlier
+            finish();
         });
 
 
-        view.findViewById(R.id.sos_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: what happened when clicking this button?
-                //I think should be:
-                // 1. alert that asks for additional approval
-                // 2. sending message with: location, driver details, driver image.
-                // 3. sos contact was
-            }
+        Button alertDialogSosButton = (Button) view.findViewById(R.id.alert_dialog_sos_btn);
+        alertDialogSosButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            showSosApprovalAlert();
         });
 
         //if back button is pressed, go back to main screen (because driver details is empty)
-        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
+        alertDialog.setOnCancelListener(dialog -> finish());
+
+        alertDialog.setOnDismissListener(dialog -> finish());
 
         if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
@@ -167,6 +166,75 @@ public class DriverDetailsActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+
+    private void showSosApprovalAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DriverDetailsActivity.this, R.style.AlertDialogTheme);
+        View view = LayoutInflater.from(DriverDetailsActivity.this).inflate(
+                R.layout.layout_sos_approval_dialog,
+                (ConstraintLayout) findViewById(R.id.alert_sos_approval_layoutDialogContainer)
+        );
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        view.findViewById(R.id.alert_sos_approval_cancel_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // go back to qr scanner that was open earlier
+                finish();
+            }
+        });
+
+
+        view.findViewById(R.id.alert_sos_approval_sos_btn).setOnClickListener(v -> sendSMSMessage());
+
+
+        //if back button is pressed, go back to main screen (because driver details' screen is empty)
+        alertDialog.setOnCancelListener(dialog -> finish());
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
+    }
+
+
+    private void sendSMSMessage() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        0);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[],
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage("0508779001", null,
+                            "הודעת סמס אוטומטית מהתוכנה שלי",
+                            null, null);
+                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        }
+
+    }
 
     private void loadImageToImageView(StorageReference storageReference, ImageView imageView) {
         final long ONE_MEGABYTE = 1024 * 1024;

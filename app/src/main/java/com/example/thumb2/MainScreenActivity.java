@@ -43,9 +43,6 @@ public class MainScreenActivity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        // ask for all permissions needed in the app:
-        askPermissions();
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -65,41 +62,8 @@ public class MainScreenActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
-    private void askPermissions() {
-        // Grant permissions:
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            List<String> permissionsToAsk = new ArrayList<>();
 
-            // Location
-            if (getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                permissionsToAsk.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
 
-            // Camera
-            if (getApplicationContext().checkSelfPermission(Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED) {
-                permissionsToAsk.add(Manifest.permission.CAMERA);
-            }
-
-            // Sms
-            if (getApplicationContext().checkSelfPermission(Manifest.permission.SEND_SMS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                permissionsToAsk.add(Manifest.permission.SEND_SMS);
-            }
-
-            // convert back to simple array
-            String[] permissionsToAskAsArry = new String[permissionsToAsk.size()];
-            permissionsToAsk.toArray(permissionsToAskAsArry);
-            if (permissionsToAsk.size() > 0) {
-                requestPermissions(permissionsToAskAsArry, 1234);
-            }
-        }
-    }
-
-    private void askPermmision(String permissionToAsk) {
-
-    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {

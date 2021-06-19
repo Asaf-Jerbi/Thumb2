@@ -221,6 +221,25 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.472" />
 
+                <TextView
+                    android:id="@+id/emergencyContact_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/edit_text"
+                    android:baselineAligned="false"
+                    android:drawableLeft="@drawable/sos"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="הגדר איש קשר לחירום"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="19dp" />
+
                 <EditText
                     android:id="@+id/carNumber_et"
                     android:layout_width="match_parent"
@@ -273,6 +292,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.472" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

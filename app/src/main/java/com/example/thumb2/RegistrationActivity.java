@@ -9,15 +9,20 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -45,13 +50,14 @@ import id.privy.livenessfirebasesdk.LivenessApp;
 public class RegistrationActivity extends AppCompatActivity {
 
     public static final String TAG = "RegistrationActivity";
+    private static final int RESULT_PICK_CONTACT = 200;
 
     //Fields
     private ImageView selfieImageView, idCardImageView, armyIdCardImageView;
     private ImageButton takeSelfieImageButton;
     private EditText firstName_et, lastNmae_et, idNumber_et, personalNumber_et,
             phoneNumber_et, carNumber_et, carDescription_et;
-    private TextView releaseDateTextView;
+    private TextView releaseDateTextView, emergencyContact_tv;
     private Button nextButton;
     private Uri imageUri;
     private FirebaseStorage firebaseStorage;
@@ -59,7 +65,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private Helper.UserType userType;
     private String firstName, lastName, releaseDateString, phoneNumber, carNumber, carDescription;
-    private String personalNumber, idNumber;
+    private String personalNumber, idNumber, emergencyContact;
     private DatabaseReference mDatabase;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private static final String $SUCCESSTEXT = "מעולה!";
@@ -89,6 +95,7 @@ public class RegistrationActivity extends AppCompatActivity {
         phoneNumber_et = findViewById(R.id.phoneNumber_et);
         carNumber_et = findViewById(R.id.carNumber_et);
         carDescription_et = findViewById(R.id.carDescription_et);
+        emergencyContact_tv = findViewById(R.id.emergencyContact_tv);
 
         //init firebase services
         firebaseStorage = FirebaseStorage.getInstance();
@@ -115,10 +122,13 @@ public class RegistrationActivity extends AppCompatActivity {
         takeSelfieImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // if version of system is newer then Marshmallow
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // ask for permissions
                     if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
                     } else {
+                        // take selfie
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
@@ -196,6 +206,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -205,13 +216,20 @@ public class RegistrationActivity extends AppCompatActivity {
                 releaseDateString = date;
             }
         };
+
+        emergencyContact_tv.setOnClickListener(v ->
+        {
+            Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+            startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);
+        });
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //uploading id
+        //upload id image
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             // Get Capture Image
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
@@ -220,14 +238,33 @@ public class RegistrationActivity extends AppCompatActivity {
             //upload to firebase
             uploadImage(captureImage, idCardImageView, "idCard.png");
         } else if (requestCode == 101 && resultCode == Activity.RESULT_OK) {
-            //uploading army id
+            // upload army id image
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             armyIdCardImageView.setImageBitmap(captureImage);
             uploadImage(captureImage, armyIdCardImageView, "armyIdCard.png");
         } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            // upload selfie image
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
             selfieImageView.setImageBitmap(captureImage);
             uploadImage(captureImage, selfieImageView, "selfie.png");
+        } else if (requestCode == RESULT_PICK_CONTACT && resultCode == Activity.RESULT_OK) {
+            Cursor cursor = null;
+            try {
+                String phoneNo = null;
+                String name = null;
+                Uri uri = data.getData();
+                cursor = getContentResolver().query(uri, null, null, null, null);
+                cursor.moveToFirst();
+                int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                phoneNo = cursor.getString(phoneIndex);
+                emergencyContact_tv.setText(phoneNo.replace("-", "")
+                        .replace("+972", "0")
+                        .replace("(", "").replace(")", "")
+                        .replace(" ", ""));
+                //todo: save to user information as well
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -247,9 +284,16 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
+        //save some important data locally on device
+        SharedPreferences localData = getApplicationContext()
+                .getSharedPreferences(getString(R.string.preference_file_key), 0);
+        SharedPreferences.Editor editor = localData.edit();
+        editor.putString(getString(R.string.emergencyContact), emergencyContact);
+        editor.apply();
+
         //save user's data to firebase:
         UserInformation newUser = new UserInformation(firstName, lastName, personalNumber, idNumber,
-                releaseDateString, carNumber, phoneNumber, carDescription, userType);
+                releaseDateString, carNumber, phoneNumber, carDescription, userType, emergencyContact);
         mDatabase.child("users").child(Objects.requireNonNull(firebaseAuth.getUid()))
                 .setValue(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -285,15 +329,13 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
                 imageView.setBackgroundResource(R.drawable.red_frame_image_view);
-                Toast.makeText(RegistrationActivity.this, "העלאה נכשלה",
+                Toast.makeText(RegistrationActivity.this, "אירעה שגיאה, נסה שנית",
                         Toast.LENGTH_LONG).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // Handle successful uploads
-                Toast.makeText(RegistrationActivity.this, "התמונה הועלתה בהצלחה",
-                        Toast.LENGTH_LONG).show();
                 imageView.setBackgroundResource(R.drawable.green_frame_image_view);
             }
         });
@@ -303,7 +345,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Helper.Validation firstNameValidation, lastNameValidation,
                 personalNumberValidation, idNumberValidation, releaseDateValidation,
                 carNumberValidation, phoneNumberValidation, idCaptureValidation,
-                armyIdCaptureValidation;
+                armyIdCaptureValidation, selfieCaptureValidation, emergencyContactValidation;
 
         firstNameValidation = validateFirstName();
         lastNameValidation = validateLastName();
@@ -314,6 +356,8 @@ public class RegistrationActivity extends AppCompatActivity {
         phoneNumberValidation = validatePhoneNumber();
         idCaptureValidation = validateImageUploaded(idCardImageView);
         armyIdCaptureValidation = validateImageUploaded(armyIdCardImageView);
+        selfieCaptureValidation = validateImageUploaded(selfieImageView);
+        emergencyContactValidation = validateEmergencyContact();
 
         if (firstNameValidation == Helper.Validation.INVALID
                 || lastNameValidation == Helper.Validation.INVALID
@@ -323,7 +367,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 || carNumberValidation == Helper.Validation.INVALID
                 || phoneNumberValidation == Helper.Validation.INVALID
                 || idCaptureValidation == Helper.Validation.INVALID
-                || armyIdCaptureValidation == Helper.Validation.INVALID) {
+                || armyIdCaptureValidation == Helper.Validation.INVALID
+                || selfieCaptureValidation == Helper.Validation.INVALID
+                || emergencyContactValidation == Helper.Validation.INVALID) {
             return Helper.Validation.INVALID;
         } else {
             return Helper.Validation.VALID;
@@ -426,6 +472,16 @@ public class RegistrationActivity extends AppCompatActivity {
         idNumber = idNumber_et.getText().toString();
         if (!idNumber.matches("\\d{9}")) {
             idNumber_et.setError("יש להזין 9 ספרות, כולל ספרת ביקורת");
+            return Helper.Validation.INVALID;
+        }
+        return Helper.Validation.VALID;
+    }
+
+    private Helper.Validation validateEmergencyContact() {
+        this.emergencyContact = emergencyContact_tv.getText().toString();
+        if (this.emergencyContact.equals(null)
+                || this.emergencyContact.equals("")) {
+            this.emergencyContact_tv.setError("יש לבחור איש קשר למקרה חירום");
             return Helper.Validation.INVALID;
         }
         return Helper.Validation.VALID;

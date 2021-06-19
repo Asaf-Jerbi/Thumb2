@@ -25,4 +25,17 @@
     <string name="cancel">ביטול</string>
     <string name="tryAgain">נסה שוב</string>
 
+
+
+    // String for storing data on local storage
+    <string name="preference_file_key">LocalStorageData</string>
+    <string name="emergencyContact">emergencyContact</string>
+    <string name="sms_send">ההודעה נשלחה</string>
+    <string name="sms_not_send">ההודעה לא נשלחה</string>
+    <string name="sms_not_send_no_service">שירות שליחת ההודעות אינו זמין</string>
+    <string name="sms_not_send_no_radio">radio off</string>
+    <string name="sms_receive">ההודעה התקבלה</string>
+    <string name="sms_not_receive">ההודעה לא התקבלה</string>
+    <string name="cannot_send_sms">"לא היתה אפשרות לשלוח את ההודעה "</string>
+
 </resources>

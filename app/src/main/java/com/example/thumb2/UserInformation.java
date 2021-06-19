@@ -1,5 +1,6 @@
 package com.example.thumb2;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class UserInformation implements Serializable {
     private String phoneNumber;
     private String releaseDate;
     private String carDescription;
+    private String emergencyContact;
     private Helper.UserType userType;
 
     // ! ! ! ! ! !
@@ -28,7 +30,8 @@ public class UserInformation implements Serializable {
 
     public UserInformation(String firstName, String lastName, String personalNumber,
                            String idNumber, String releaseDate, String carNumber,
-                           String phoneNumber, String carDescription, Helper.UserType userType) {
+                           String phoneNumber, String carDescription, Helper.UserType userType,
+                           String emergencyContact) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.personalNumber = personalNumber;
@@ -38,6 +41,8 @@ public class UserInformation implements Serializable {
         this.phoneNumber = phoneNumber;
         this.carDescription = carDescription;
         this.userType = userType;
+        this.emergencyContact = emergencyContact;
+
     }
 
     public void setCarDescription(String carDescription) {
@@ -110,6 +115,14 @@ public class UserInformation implements Serializable {
 
     public void setCarNumber(String carNumber) {
         this.carNumber = carNumber;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContact;
     }
 
     public String getFullName() {

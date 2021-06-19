@@ -3,8 +3,11 @@ package com.example.thumb2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -19,6 +22,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.rpc.Help;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText emailEt, passwordEt1, passwordEt2;
@@ -36,6 +42,9 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         helper = new Helper();
+
+        // ask for permissions
+        askPermissions();
 
         //initiate views
         firebaseAuth = FirebaseAuth.getInstance();
@@ -60,6 +69,44 @@ public class SignUpActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void askPermissions() {
+        // Grant permissions:
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            List<String> permissionsToAsk = new ArrayList<>();
+
+            // Location
+            if (getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionsToAsk.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+
+            // Camera
+            if (getApplicationContext().checkSelfPermission(Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionsToAsk.add(Manifest.permission.CAMERA);
+            }
+
+            // Sms
+            if (getApplicationContext().checkSelfPermission(Manifest.permission.SEND_SMS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionsToAsk.add(Manifest.permission.SEND_SMS);
+            }
+
+            // Contacts
+            if (getApplicationContext().checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionsToAsk.add(Manifest.permission.READ_CONTACTS);
+            }
+
+            // convert back to simple array
+            String[] permissionsToAskAsArry = new String[permissionsToAsk.size()];
+            permissionsToAsk.toArray(permissionsToAskAsArry);
+            if (permissionsToAsk.size() > 0) {
+                requestPermissions(permissionsToAskAsArry, 1234);
+            }
+        }
     }
 
     private void Register() {

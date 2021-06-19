@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class DriverDetailsActivity extends AppCompatActivity {
     public static final String TAG = "DriverDetailsActivity";
     private Button approveDriverButton;
     private Button sosButton;
+    private Helper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class DriverDetailsActivity extends AppCompatActivity {
         ImageView id_iv = (ImageView) findViewById(R.id.driverDetails_idCard_iv);
         ImageView armyId_iv = findViewById(R.id.driverDetails_armyIdCard_iv);
         ImageView selfie_iv = findViewById(R.id.driverDetails_selfie_iv);
+        helper = new Helper();
 
         approveDriverButton = (Button) findViewById(R.id.yes_btn);
         sosButton = (Button) findViewById(R.id.sos_btn);
@@ -133,7 +136,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
     }
 
     private void showUnrecognizedBarcodeAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DriverDetailsActivity.this, R.style.AlertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog
+                .Builder(DriverDetailsActivity.this, R.style.AlertDialogTheme);
         View view = LayoutInflater.from(DriverDetailsActivity.this).inflate(
                 R.layout.layout_unrecognized_barcode_dialog,
                 (ConstraintLayout) findViewById(R.id.layoutDialogContainer)
@@ -157,8 +161,6 @@ public class DriverDetailsActivity extends AppCompatActivity {
         //if back button is pressed, go back to main screen (because driver details is empty)
         alertDialog.setOnCancelListener(dialog -> finish());
 
-        alertDialog.setOnDismissListener(dialog -> finish());
-
         if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
@@ -168,7 +170,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
 
 
     private void showSosApprovalAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DriverDetailsActivity.this, R.style.AlertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DriverDetailsActivity.this,
+                R.style.AlertDialogTheme);
         View view = LayoutInflater.from(DriverDetailsActivity.this).inflate(
                 R.layout.layout_sos_approval_dialog,
                 (ConstraintLayout) findViewById(R.id.alert_sos_approval_layoutDialogContainer)
@@ -176,16 +179,20 @@ public class DriverDetailsActivity extends AppCompatActivity {
         builder.setView(view);
         final AlertDialog alertDialog = builder.create();
 
-        view.findViewById(R.id.alert_sos_approval_cancel_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // go back to qr scanner that was open earlier
-                finish();
-            }
+        view.findViewById(R.id.alert_sos_approval_cancel_btn).setOnClickListener(v -> {
+            // go back to qr scanner that was open earlier
+            finish();
         });
 
 
-        view.findViewById(R.id.alert_sos_approval_sos_btn).setOnClickListener(v -> sendSMSMessage());
+        view.findViewById(R.id.alert_sos_approval_sos_btn)
+                .setOnClickListener(v -> {
+                            helper.sendSosMessage(getApplicationContext());
+                            Intent intent = new Intent(getApplicationContext(),
+                                    MainScreenActivity.class);
+                            startActivity(intent);
+                        }
+                );
 
 
         //if back button is pressed, go back to main screen (because driver details' screen is empty)
@@ -199,38 +206,35 @@ public class DriverDetailsActivity extends AppCompatActivity {
     }
 
 
-    private void sendSMSMessage() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        0);
+    //todo: remove me if helper methods work
+    private void sendSmsMessage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getApplicationContext().checkSelfPermission(Manifest.permission.SEND_SMS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 0);
             }
         }
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[],
                                            int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage("0508779001", null,
-                            "הודעת סמס אוטומטית מהתוכנה שלי",
-                            null, null);
-                    Toast.makeText(getApplicationContext(), "SMS sent.",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
-                    return;
-                }
+
+        //todo: remove me if helper methods work
+        if (requestCode == 0) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage("0508779001", null,
+                        "הודעת סמס אוטומטית מהתוכנה שלי",
+                        null, null);
+                Toast.makeText(getApplicationContext(), "SMS sent.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                return;
             }
         }
 

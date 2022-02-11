@@ -1,1 +1,1 @@
-# Thumb2
+# Thumb
